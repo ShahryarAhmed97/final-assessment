@@ -16,13 +16,14 @@ import {
   InputGroupText
 } from "shards-react";
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 var QRCode = require('qrcode.react');
 
 
 
 
- function userActions({ current,history }) {
+function userActions({ current, history }) {
 
   const [visible, setVisible] = useState(false);
   const [toggleModal, setToggleModal] = useState(false);
@@ -71,24 +72,31 @@ var QRCode = require('qrcode.react');
 
 
   const requestLogin = async () => {
-
+    // let email = localStorage.getItem("email")
     if (email && userSecret) {
       let params = {
         method: 'post',
         headers: {
           "Content-type": "application/json; charset=UTF-8"
         },
-        body: JSON.stringify({ email, token: loginToken })
+        body: JSON.stringify({ email, token: loginToken.toString() })
       }
-      let res = await fetch("http://192.168.0.106:4000/auth/verify", params)
+      // console.log("body", { email, token: loginToken.toString() })
+      // let res = await fetch("http://192.168.0.106:4000/auth/verify", params)
+      let body={ email, token: loginToken.toString() }
+      let res = await axios.post("http://192.168.0.106:4000/auth/verify", body)
 
-      res = await res.json()
-      if (res) {
+      // res = await res.json()
+      console.log("res===>",res)
+      if (res.status ) {
 
         console.log(res)
-        localStorage.setItem("currentUser", JSON.stringify(res.data))
+        localStorage.setItem("currentUser", JSON.stringify(email))
         history.push("/home")
       }
+      // else {
+      //   alert("Internal Server error")
+      // }
       // setStep(1)
     }
     else {
@@ -98,8 +106,8 @@ var QRCode = require('qrcode.react');
   }
 
   const logoutFun = () => {
-    
-     localStorage.removeItem("currentUser")
+
+    localStorage.removeItem("currentUser")
     history.push("/blog-overview")
   }
 
@@ -146,14 +154,12 @@ var QRCode = require('qrcode.react');
               <i className="material-icons">&#xE7FD;</i> Login
           </DropdownItem>
 
-            <DropdownItem >
-              <i className="material-icons">&#xE8B8;</i> Sign up
-          </DropdownItem>
+
           </>
         }
 
         {current === "home" &&
-          <DropdownItem  onClick={() => logoutFun()}>
+          <DropdownItem onClick={() => logoutFun()}>
             <i className="material-icons">&#xE8B8;</i> Log out
      </DropdownItem>
 

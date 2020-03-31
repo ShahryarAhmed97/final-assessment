@@ -1,6 +1,6 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Container, Row, Col ,Card, CardHeader, CardBody } from "shards-react";
+import { Container, Row, Col, Card, CardHeader, CardBody } from "shards-react";
 
 import PageTitle from "./../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
@@ -12,140 +12,149 @@ import TopReferrals from "./../components/common/TopReferrals";
 import { withRouter } from 'react-router-dom';
 
 
-function BlogOverview ({ smallStats,history }){
-//   useEffect(() => {
-//     let currentUser = localStorage.getItem('currentUser')
-//     currentUser = JSON.parse(currentUser)
-//     if (currentUser !== null && currentUser !== undefined) {
-//         history.push("/home")
-//     }
-//     console.log(currentUser, "currentUser")
-// }, [])
+function BlogOverview({ smallStats, history }) {
+  const [allUsers, setAllUsers] = useState([])
+  useEffect(() => {
+    let currentUser = localStorage.getItem('currentUser')
+    currentUser = JSON.parse(currentUser)
+    if (currentUser !== null && currentUser !== undefined) {
+      history.push("/home")
+    }
+    getAllUsersProgress()
+
+  }, [])
+
+  const getAllUsersProgress = async () => {
+    try {
+      let res = await fetch("http://192.168.0.106:4000/course")
+
+      res = await res.json()
+      if (res) {
+        setAllUsers(res)
+        console.log("get all users===>", res)
+
+
+
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+
 
   return (
 
-  
-  <Container fluid className="main-content-container px-4">
-    {/* Page Header */}
-    {/* {console.log("props in blogoverview",props)} */}
 
-    <Row noGutters className="page-header py-4">
-      <PageTitle title="Blog Overview" subtitle="Dashboard" className="text-sm-left mb-3" />
-    </Row>
+    <Container fluid className="main-content-container px-4">
+      {/* Page Header */}
+      {/* {console.log("props in blogoverview",props)} */}
 
-    {/* Small Stats Blocks */}
-    <Row>
-      {smallStats.map((stats, idx) => (
-        <Col className="col-lg mb-4" key={idx} {...stats.attrs}>
-          <SmallStats
-            id={`small-stats-${idx}`}
-            variation="1"
-            chartData={stats.datasets}
-            chartLabels={stats.chartLabels}
-            label={stats.label}
-            value={stats.value}
-            percentage={stats.percentage}
-            increase={stats.increase}
-            decrease={stats.decrease}
-          />
+      <Row noGutters className="page-header py-4">
+        <PageTitle title="Blog Overview" subtitle="Dashboard" className="text-sm-left mb-3" />
+      </Row>
+
+      {/* Small Stats Blocks */}
+      <Row>
+        {smallStats.map((stats, idx) => (
+          <Col className="col-lg mb-4" key={idx} {...stats.attrs}>
+            <SmallStats
+              id={`small-stats-${idx}`}
+              variation="1"
+              chartData={stats.datasets}
+              chartLabels={stats.chartLabels}
+              label={stats.label}
+              value={stats.value}
+              percentage={stats.percentage}
+              increase={stats.increase}
+              decrease={stats.decrease}
+            />
+          </Col>
+        ))}
+      </Row>
+
+      <Row>
+        {/* Users Overview */}
+        <Col lg="8" md="12" sm="12" className="mb-4">
+          <UsersOverview />
         </Col>
-      ))}
-    </Row>
 
-    <Row>
-      {/* Users Overview */}
-      <Col lg="8" md="12" sm="12" className="mb-4">
-        <UsersOverview />
-      </Col>
+        {/* Users by Device */}
+        <Col lg="4" md="6" sm="12" className="mb-4">
+          <UsersByDevice />
+        </Col>
 
-      {/* Users by Device */}
-      <Col lg="4" md="6" sm="12" className="mb-4">
-        <UsersByDevice />
-      </Col>
+        {/* New Draft */}
+        <Col lg="12" md="12" sm="12" className="mb-4">
 
-      {/* New Draft */}
-      <Col lg="12" md="12" sm="12" className="mb-4">
 
-      
-        <Card small className="mb-4">
-          <CardHeader className="border-bottom">
-            <h6 className="m-0">Active Users</h6>
-          </CardHeader>
-          <CardBody className="p-0 pb-3">
-            <table className="table mb-0">
-              <thead className="bg-light">
-                <tr>
-                  <th scope="col" className="border-0">
-                    #
-                  </th>
-                  <th scope="col" className="border-0">
-                    First Name
-                  </th>
-                  <th scope="col" className="border-0">
-                    Last Name
-                  </th>
-                  <th scope="col" className="border-0">
-                    Country
-                  </th>
-                  <th scope="col" className="border-0">
-                    City
-                  </th>
-                  <th scope="col" className="border-0">
-                    Phone
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Ali</td>
-                  <td>Kerry</td>
-                  <td>Russian Federation</td>
-                  <td>Gdańsk</td>
-                  <td>107-0339</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Clark</td>
-                  <td>Angela</td>
-                  <td>Estonia</td>
-                  <td>Borghetto di Vara</td>
-                  <td>1-660-850-1647</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Jerry</td>
-                  <td>Nathan</td>
-                  <td>Cyprus</td>
-                  <td>Braunau am Inn</td>
-                  <td>214-4225</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Colt</td>
-                  <td>Angela</td>
-                  <td>Liberia</td>
-                  <td>Bad Hersfeld</td>
-                  <td>1-848-473-7416</td>
-                </tr>
-              </tbody>
-            </table>
-          </CardBody>
-        </Card>
-      </Col>
-   
-      {/* Discussions */}
-      <Col lg="5" md="12" sm="12" className="mb-4">
-        {/* <Discussions /> */}
-      </Col>
+          <Card small className="mb-4">
+            <CardHeader className="border-bottom">
+              <h6 className="m-0">Active Users</h6>
+            </CardHeader>
+            <CardBody className="p-0 pb-3">
+              <table className="table mb-0">
+              
 
-      {/* Top Referrals */}
-      <Col lg="3" md="12" sm="12" className="mb-4">
-        {/* <TopReferrals /> */}
-      </Col>
-    </Row>
-  </Container>
-  )}
+                      <thead className="bg-light">
+                        <tr>
+                          <th scope="col" className="border-0">
+                            #
+                  </th>
+                          <th scope="col" className="border-0">
+                            Email
+                  </th>
+                          <th scope="col" className="border-0">
+                           Title
+                  </th>
+                          <th scope="col" className="border-0">
+                            Duration
+                  </th>
+                          <th scope="col" className="border-0">
+                          Description
+                  </th>
+                          <th scope="col" className="border-0">
+                            Progress
+                  </th>
+                        </tr>
+                      </thead>
+                      {
+                  allUsers.map((val,inx) => {
+                    return (
+                      <tbody>
+                        <tr>
+                    <td>{inx}</td>
+                          <td>{val.email}</td>
+                          <td>{val.title}</td>
+                          <td>{val.duration}</td>
+                          <td>{val.description}</td>
+                          <td>{val.progress}</td>
+                        </tr>
+
+                      </tbody>
+)
+
+                  })
+                }
+              </table>
+            </CardBody>
+          </Card>
+        </Col>
+
+        {/* Discussions */}
+        <Col lg="5" md="12" sm="12" className="mb-4">
+          {/* <Discussions /> */}
+        </Col>
+
+        {/* Top Referrals */}
+        <Col lg="3" md="12" sm="12" className="mb-4">
+          {/* <TopReferrals /> */}
+        </Col>
+      </Row>
+    </Container>
+  )
+}
 
 BlogOverview.propTypes = {
   /**
