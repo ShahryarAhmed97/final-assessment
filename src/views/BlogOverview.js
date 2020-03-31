@@ -13,14 +13,14 @@ import { withRouter } from 'react-router-dom';
 
 
 function BlogOverview ({ smallStats,history }){
-  useEffect(() => {
-    let currentUser = localStorage.getItem('currentUser')
-    currentUser = JSON.parse(currentUser)
-    if (currentUser !== null && currentUser !== undefined) {
-        history.push("/home")
-    }
-    console.log(currentUser, "currentUser")
-}, [])
+//   useEffect(() => {
+//     let currentUser = localStorage.getItem('currentUser')
+//     currentUser = JSON.parse(currentUser)
+//     if (currentUser !== null && currentUser !== undefined) {
+//         history.push("/home")
+//     }
+//     console.log(currentUser, "currentUser")
+// }, [])
 
   return (
 

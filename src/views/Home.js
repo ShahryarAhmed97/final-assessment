@@ -16,6 +16,8 @@ import {
     Button,
     Container,
     CardBody,
+    Slider
+
 } from "shards-react";
 
 import PageTitle from "../components/common/PageTitle";
@@ -25,6 +27,40 @@ import { withRouter } from 'react-router-dom';
 
 function Home(props) {
 
+    const [title,setTitle]=useState("")
+    const [description,setDescription]=useState("")
+    const [duration ,setDuration]=useState("")
+    const [progress,setProgress]=useState("")
+
+    const addNewCourse = async () => {
+
+        if (title && description && duration && progress) {
+            alert("Course Successfully Added")
+        //   let params = {
+        //     method: 'post',
+        //     headers: {
+        //       "Content-type": "application/json; charset=UTF-8"
+        //     },
+        //     body: JSON.stringify({ email, token: loginToken })
+        //   }
+        //   let res = await fetch("http://192.168.0.106:4000/auth/verify", params)
+    
+        //   res = await res.json()
+        //   if (res) {
+    
+        //     console.log(res)
+        //     localStorage.setItem("currentUser", JSON.stringify(res.data))
+        //     history.push("/home")
+        //   }
+          // setStep(1)
+        }
+        else {
+          alert('Please enter a valid email')
+        }
+    
+      }
+    
+
     useEffect(() => {
         let currentUser = localStorage.getItem('currentUser')
         currentUser = JSON.parse(currentUser)
@@ -33,6 +69,7 @@ function Home(props) {
         }
         console.log(currentUser, "currentUser")
     }, [])
+
     return (
         <Container fluid className="main-content-container px-4">
             <Row noGutters className="page-header py-4">
@@ -56,97 +93,59 @@ function Home(props) {
                                         <Form>
                                             <Row form>
                                                 {/* First Name */}
-                                                <Col md="6" className="form-group">
-                                                    <label htmlFor="feFirstName">First Name</label>
+                                                <Col md="11" className="form-group">
+                                                    <label htmlFor="feFirstName">Title</label>
                                                     <FormInput
                                                         id="feFirstName"
-                                                        placeholder="First Name"
-                                                        value="Sierra"
-                                                        onChange={() => { }}
+                                                        placeholder="Title"
+                                                        value={title}
+                                                        onChange={(e) => {setTitle(e.target.value) }}
                                                     />
                                                 </Col>
-                                                {/* Last Name */}
-                                                <Col md="6" className="form-group">
-                                                    <label htmlFor="feLastName">Last Name</label>
-                                                    <FormInput
-                                                        id="feLastName"
-                                                        placeholder="Last Name"
-                                                        value="Brooks"
-                                                        onChange={() => { }}
-                                                    />
-                                                </Col>
+
                                             </Row>
                                             <Row form>
                                                 {/* Email */}
                                                 <Col md="6" className="form-group">
-                                                    <label htmlFor="feEmail">Email</label>
+                                                    <label htmlFor="feEmail">Duration</label>
                                                     <FormInput
                                                         type="email"
                                                         id="feEmail"
-                                                        placeholder="Email Address"
-                                                        value="sierra@example.com"
-                                                        onChange={() => { }}
-                                                        autoComplete="email"
+                                                        placeholder="Duration"
+                                                        value={duration}
+                                                        onChange={(e) => {setDuration(e.target.value) }}
                                                     />
                                                 </Col>
-                                                {/* Password */}
-                                                <Col md="6" className="form-group">
-                                                    <label htmlFor="fePassword">Password</label>
-                                                    <FormInput
-                                                        type="password"
-                                                        id="fePassword"
-                                                        placeholder="Password"
-                                                        value="EX@MPL#P@$$w0RD"
-                                                        onChange={() => { }}
-                                                        autoComplete="current-password"
-                                                    />
-                                                </Col>
+
                                             </Row>
-                                            <FormGroup>
-                                                <label htmlFor="feAddress">Address</label>
-                                                <FormInput
-                                                    id="feAddress"
-                                                    placeholder="Address"
-                                                    value="1234 Main St."
-                                                    onChange={() => { }}
+                                            
+
+                                            <div className="mb-2 pb-1">
+                                                <strong className="text-muted d-block">Current Progress</strong>
+                                                <Slider
+                                                    theme="success"
+                                                    className="my-4"
+                                                    connect={[true, false]}
+                                                    start={[85]}
+                                                    range={{ min: 0, max: 100 }}
+                                                    value={progress}
+                                                        onChange={(e) => {setProgress(e.target.value) }}
+                                                    tooltips
                                                 />
-                                            </FormGroup>
-                                            <Row form>
-                                                {/* City */}
-                                                <Col md="6" className="form-group">
-                                                    <label htmlFor="feCity">City</label>
-                                                    <FormInput
-                                                        id="feCity"
-                                                        placeholder="City"
-                                                        onChange={() => { }}
-                                                    />
-                                                </Col>
-                                                {/* State */}
-                                                <Col md="4" className="form-group">
-                                                    <label htmlFor="feInputState">State</label>
-                                                    <FormSelect id="feInputState">
-                                                        <option>Choose...</option>
-                                                        <option>...</option>
-                                                    </FormSelect>
-                                                </Col>
-                                                {/* Zip Code */}
-                                                <Col md="2" className="form-group">
-                                                    <label htmlFor="feZipCode">Zip</label>
-                                                    <FormInput
-                                                        id="feZipCode"
-                                                        placeholder="Zip"
-                                                        onChange={() => { }}
-                                                    />
-                                                </Col>
-                                            </Row>
+                                                
+                                            </div>
+
                                             <Row form>
                                                 {/* Description */}
                                                 <Col md="12" className="form-group">
-                                                    <label htmlFor="feDescription">Description</label>
+                                                    <label htmlFor="feDescription"
+                                                    value={description}
+                                                    onChange={(e) => {setDescription(e.target.value) }}
+                                                    >Description</label>
                                                     <FormTextarea id="feDescription" rows="5" />
                                                 </Col>
                                             </Row>
-                                            <Button theme="accent">Update Account</Button>
+                                            <Button theme="accent" onClick={()=>addNewCourse()}>Add new Course</Button>
                                         </Form>
                                     </Col>
                                 </Row>
