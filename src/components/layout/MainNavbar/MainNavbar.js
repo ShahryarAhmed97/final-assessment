@@ -6,6 +6,8 @@ import { Container, Navbar } from "shards-react";
 import NavbarSearch from "./NavbarSearch";
 import NavbarNav from "./NavbarNav/NavbarNav";
 import NavbarToggle from "./NavbarToggle";
+import { withRouter } from 'react-router-dom';
+
 
 const MainNavbar = ({ layout, stickyTop ,current}) => {
   const classes = classNames(
@@ -42,4 +44,4 @@ MainNavbar.defaultProps = {
   stickyTop: true
 };
 
-export default MainNavbar;
+export default withRouter(MainNavbar);

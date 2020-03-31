@@ -21,8 +21,18 @@ import {
 import PageTitle from "../components/common/PageTitle";
 import UserDetails from "../components/user-profile-lite/UserDetails";
 import UserAccountDetails from "../components/user-profile-lite/UserAccountDetails";
+import { withRouter } from 'react-router-dom';
 
-export default function Home() {
+function Home(props) {
+
+    useEffect(() => {
+        let currentUser = localStorage.getItem('currentUser')
+        currentUser = JSON.parse(currentUser)
+        if (currentUser == null || currentUser == undefined) {
+            props.history.push("/blog-overview")
+        }
+        console.log(currentUser, "currentUser")
+    }, [])
     return (
         <Container fluid className="main-content-container px-4">
             <Row noGutters className="page-header py-4">
@@ -221,3 +231,5 @@ export default function Home() {
         </Container>
     );
 }
+
+export default withRouter(Home)

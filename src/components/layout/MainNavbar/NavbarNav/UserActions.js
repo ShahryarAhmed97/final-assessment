@@ -15,13 +15,14 @@ import {
   InputGroupAddon,
   InputGroupText
 } from "shards-react";
-import axios from "axios"
+import { withRouter } from 'react-router-dom';
+
 var QRCode = require('qrcode.react');
 
 
 
 
-export default function userActions({ current, history }) {
+ function userActions({ current,history }) {
 
   const [visible, setVisible] = useState(false);
   const [toggleModal, setToggleModal] = useState(false);
@@ -30,7 +31,8 @@ export default function userActions({ current, history }) {
   const [userSecret, setUserSecret] = useState("")
   const [loginToken, setLoginToken] = useState("")
 
-  console.log("history", history)
+  console.log("curent", history)
+
 
 
   const getUserSecret = async () => {
@@ -85,7 +87,7 @@ export default function userActions({ current, history }) {
 
         console.log(res)
         localStorage.setItem("currentUser", JSON.stringify(res.data))
-        history.push("/blog-overview")
+        history.push("/home")
       }
       // setStep(1)
     }
@@ -95,11 +97,11 @@ export default function userActions({ current, history }) {
 
   }
 
- const  logoutFun=()=>{
-  history.push("/blog-overview")
-
-  //  localStorage.removeItem("currentUser")
- }
+  const logoutFun = () => {
+    
+     localStorage.removeItem("currentUser")
+    history.push("/blog-overview")
+  }
 
   return (
     <NavItem tag={Dropdown} caret toggle={() => setVisible(!visible)}>
@@ -144,14 +146,14 @@ export default function userActions({ current, history }) {
               <i className="material-icons">&#xE7FD;</i> Login
           </DropdownItem>
 
-            <DropdownItem tag={Link} to="edit-user-profile">
+            <DropdownItem >
               <i className="material-icons">&#xE8B8;</i> Sign up
           </DropdownItem>
           </>
         }
 
         {current === "home" &&
-          <DropdownItem tag={Link} to="edit-user-profile" onClick={()=>logoutFun()}>
+          <DropdownItem  onClick={() => logoutFun()}>
             <i className="material-icons">&#xE8B8;</i> Log out
      </DropdownItem>
 
@@ -169,3 +171,4 @@ export default function userActions({ current, history }) {
   );
 }
 
+export default withRouter(userActions)

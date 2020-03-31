@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col ,Card, CardHeader, CardBody } from "shards-react";
 
@@ -9,10 +9,26 @@ import UsersByDevice from "./../components/blog/UsersByDevice";
 import NewDraft from "./../components/blog/NewDraft";
 import Discussions from "./../components/blog/Discussions";
 import TopReferrals from "./../components/common/TopReferrals";
+import { withRouter } from 'react-router-dom';
 
-const BlogOverview = ({ smallStats }) => (
+
+function BlogOverview ({ smallStats,history }){
+  useEffect(() => {
+    let currentUser = localStorage.getItem('currentUser')
+    currentUser = JSON.parse(currentUser)
+    if (currentUser !== null && currentUser !== undefined) {
+        history.push("/home")
+    }
+    console.log(currentUser, "currentUser")
+}, [])
+
+  return (
+
+  
   <Container fluid className="main-content-container px-4">
     {/* Page Header */}
+    {/* {console.log("props in blogoverview",props)} */}
+
     <Row noGutters className="page-header py-4">
       <PageTitle title="Blog Overview" subtitle="Dashboard" className="text-sm-left mb-3" />
     </Row>
@@ -129,7 +145,7 @@ const BlogOverview = ({ smallStats }) => (
       </Col>
     </Row>
   </Container>
-);
+  )}
 
 BlogOverview.propTypes = {
   /**
@@ -236,4 +252,4 @@ BlogOverview.defaultProps = {
   ]
 };
 
-export default BlogOverview;
+export default withRouter(BlogOverview);

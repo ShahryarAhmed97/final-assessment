@@ -5,6 +5,8 @@ import { Container, Row, Col } from "shards-react";
 import MainNavbar from "../components/layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/layout/MainFooter";
+import { withRouter } from 'react-router-dom';
+
 
 const DefaultLayout = ({ children, noNavbar, noFooter }) => (
   <Container fluid>
@@ -41,4 +43,4 @@ DefaultLayout.defaultProps = {
   noFooter: false
 };
 
-export default DefaultLayout;
+export default withRouter(DefaultLayout);
